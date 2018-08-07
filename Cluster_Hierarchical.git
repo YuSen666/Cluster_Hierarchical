@@ -1,0 +1,36 @@
+# R-code
+# class demo
+
+str(iris)
+head(iris)
+# view data
+
+idx <- sample(1:dim(iris)[1], 50)
+# 隨機抽樣，1~ dim(iris)[1] (=150)，抽50個號碼，命名為idx
+idx
+
+irisSample <- iris[idx,]
+# 存成一個data.frame，row=隨機抽出的idx，col=全部
+
+irisSample$Species <- NULL
+# 把Species NULL
+
+hc <- hclust(dist(irisSample), method="ave")
+# hierarchical clustering
+# method = "single" #single(最小距離)
+# method = "complete" #complete(最大距離)
+# method = "average" #average(平均距離)
+# method = "ward.D2" # ward's(訊息喪失程度,越小成群)
+
+plot(hc)
+plot(hc, hang = -1, labels=iris$Species[idx])
+# 讓圖對齊
+
+rect.hclust(hc, k=3)
+# 框出群
+
+groups <- cutree(hc, k=3) 
+groups
+write.csv(groups, "C://Users/ASUS/Desktop/hclust_example_out.csv", row.names = TRUE)
+
+# 樣本為隨機抽取，每次分群結果不盡相同
